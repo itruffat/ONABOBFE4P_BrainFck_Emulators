@@ -118,7 +118,7 @@ class ONABFE4P_emulation_base(ABC):
                         if self.max_cell_value is not None:
                             if ((self.use_negatives and self.data[self.data_pointer] < -(self.max_cell_value)+1) or
                                     (not self.use_negatives and self.data[self.data_pointer] < 0)):
-                                self.data[self.data_pointer] = (2 ** self.max_cell_value) - 1
+                                self.data[self.data_pointer] = (self.max_cell_value) - 1
                 elif n == '[':
                     do_continue, _ = self._run_hooks("PRE[")
                     if do_continue and self.data[self.data_pointer] == 0:
