@@ -1,9 +1,9 @@
 import argparse as AP
 from Emulators.VainillaEmulator import ONABFE4P_emulation_plain
-from Emulators.HookableEmulator import ONABFE4P_emulation_with_statefull_print
+from Emulators.StatefulEmulator import ONABFE4P_emulation_with_statefull_print
 
 emulators = {
-    'stateful':ONABFE4P_emulation_with_statefull_print,
+    'stateful-print':ONABFE4P_emulation_with_statefull_print,
     'vainilla':ONABFE4P_emulation_plain
 }
 
