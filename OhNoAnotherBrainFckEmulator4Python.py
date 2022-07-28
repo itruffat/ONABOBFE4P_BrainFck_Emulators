@@ -18,7 +18,9 @@ class ONABFE4P_emulation_base(ABC):
      * allow_pointer_overflow: Allows the data pointer to wrap around and go from (max_data -1) to 0.
      * allow_pointer_underflow: Allows the data pointer to wrap around and go from 0 to (max_data-1).
      * allow_data_overflow: Allows data to wrap around, and go from the biggest possible value to the smallest one.
+                            Has no use if max_cell_power is "None", since it can not overflow.
      * allow_data_underflow: Allows data to wrap around, and go from the smallest possible value to the biggest one.
+                            Has no use if max_cell_power is "None", since it can not pick a value to go after underflow.
     """
 
     def __init__(self, program, initial_data, max_data, hooks, io_output, io_input, max_cell_power, use_negatives,
@@ -104,8 +106,10 @@ class ONABFE4P_emulation_base(ABC):
                                 self.data[self.data_pointer] = 0
                 elif n == '-':
                     # Underflow check
-                    assert (self.allow_data_underflow or self.max_cell_power is None or
-                            (self.use_negatives and self.data[self.data_pointer] > -(2 ** self.max_cell_power))+1 or
+                    assert (
+                            (self.max_cell_power is None and self.use_negatives) or
+                            (self.allow_data_underflow and self.max_cell_power is not None) or
+                            (self.use_negatives and self.data[self.data_pointer] > -(2 ** self.max_cell_power)+1) or
                             (not self.use_negatives and self.data[self.data_pointer] > 0))
                     do_continue, _ = self._run_hooks("-")
                     if do_continue:

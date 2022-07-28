@@ -108,3 +108,43 @@ except Exception as e:
 test16 = Emulation_Test("+>++>+++>++++>++++>+++>++>+<<<<<<<<-", allow_pointer_underflow= True)
 test16.run()
 assert(test16.data == [1,2,3,4,4,3,2,0] and test16.data_pointer == 7)
+
+# Infinite data size, no overflow"
+test17 = Emulation_Test("+++++++>>>>>>>+++++++++++++++++++++", max_cell_power=None)
+test17.run()
+assert(test17.data == [7,0,0,0,0,0,0,21])
+
+# Infinite data size, no overflow (with overflow enabled)"
+test18 = Emulation_Test("+++++++>>>>>>>+++++++++++++++++++++", max_cell_power=None, allow_data_overflow=True)
+test18.run()
+assert(test18.data == [7,0,0,0,0,0,0,21])
+
+
+# Infinite data size, unwanted underflow"
+test19 = Emulation_Test("+++++++>>>>>>>+++++++++++++++++++++----------------------", max_cell_power=None)
+try:
+    test19.run()
+except AssertionError as e:
+    assert(test19.data == [7,0,0,0,0,0,0,0])
+except Exception as e:
+    raise e
+
+# Infinite data size, unwanted underflow (with underflow enabled)"
+test20 = Emulation_Test("+++++++>>>>>>>+++++++++++++++++++++----------------------", max_cell_power=None, allow_data_underflow= True)
+try:
+    test20.run()
+except AssertionError as e:
+    assert(test20.data == [7,0,0,0,0,0,0,0])
+except Exception as e:
+    raise e
+
+# Infinite data size, negative value and no underflow"
+test21 = Emulation_Test("+++++++>>>>>>>+---------------------------------", max_cell_power=None, use_negatives=True)
+test21.run()
+assert(test21.data == [7,0,0,0,0,0,0,-32])
+
+
+# Infinite data size, negative value and no underflow (with underflow enabled)"
+test22 = Emulation_Test("+++++++>>>>>>>+---------------------------------", max_cell_power=None, use_negatives=True, allow_data_underflow=True)
+test22.run()
+assert(test22.data == [7,0,0,0,0,0,0,-32])
