@@ -43,7 +43,7 @@ You just need to import the ONABFE4P_emulation_base and create a subclass, for e
 
             super().__init__(program, initial_data=None, max_data=30000, hooks=[],
                          io_output=print_default, io_input=input_default,
-                         max_cell_value=3, use_negatives=False,
+                         max_cell_value=8, use_negatives=False,
                          allow_pointer_overflow=False, allow_pointer_underflow=False,
                          allow_data_overflow=False, allow_data_underflow=False)
    
