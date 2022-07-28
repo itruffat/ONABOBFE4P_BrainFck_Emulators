@@ -2,11 +2,54 @@
 
 ## Introduction
 
-As the name implies, this is just another BrianF*ck emulator done in Python. BF was originally designed as an easy language to compile language (not really caring if it was actually useful), which also made the job of creating a personal emulator for it almost trivial. Originally created as _"Oh No Another Tiny BF Emulator"_, I created this project because I wanted to do some experiments in BF, and using a custome emulator allowed me to start debuging fast. 
+As the name implies, this is just another BrianF*ck emulator done in Python. BF was originally designed as an easy 
+language to compile language (not really caring if it was actually useful), which also made the job of creating a 
+personal emulator for it almost trivial. Originally created as _"Oh No Another Tiny BF Emulator"_, I created this 
+project because I wanted to do some experiments in BF, and using a custome emulator allowed me to start debugging fast. 
 
-However, the hooks I was using for debbuging could be abstracted, creating a more customizable code. Following that same logic, certain behaviours could be made controllable by initialization arguments, allowing the user to create a huge number of different BF machines. This is important since [BF is not a thoroughly defined language](https://en.wikipedia.org/wiki/Brainfuck#Portability_issues), and issues like cell-size, computer number format (8-bits/16-bits, signed/unsigned, etc), pointer behaviour after going beyond the treshold are not defined and can be decided by the user.
+However, the hooks I was using for debugging could be abstracted, creating a more customizable code. Following that same 
+logic, certain behaviours could be made controllable by initialization arguments, allowing the user to create a huge 
+number of different BF machines. This is important since 
+[BF is not a thoroughly defined language](https://en.wikipedia.org/wiki/Brainfuck#Portability_issues), and issues like 
+cell-size, computer number format (8-bits/16-bits, signed/unsigned, etc), pointer behaviour after going beyond the 
+threshold are not defined and can be decided by the user.
 
-As such, ONABFE4P is a library that allows you to create a BF emulator that follows the specifications you need.
+As such, ONABFE4P is a library that allows you to create a BF emulator profile that follows the specifications you need.
+
+## How to run
+
+To run already coded emulator profiles, simply use the CLI client, adding an emulator name and a program file or a 
+program string. Examples:
+
+    
+    ./ONABFE4P_CLI.py --e stateful-print --prog "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
+    ./ONABFE4P_CLI.py --e vainilla --path program.bf
+
+## How to use a customized Emulator
+
+You just need to import the ONABFE4P_emulation_base and create a subclass, for example
+
+    class FIRST_EMULATOR(ONABFE4P_emulation_base):
+  
+        def __init__(self, program):
+            def print_default(x): print(x, end='')
+
+            def input_default(): return input()
+
+            super().__init__(program, initial_data=None, max_data=30000, hooks=[],
+                         io_output=print_default, io_input=input_default,
+                         max_cell_value=2**8, use_negatives=False,
+                         allow_pointer_overflow=False, allow_pointer_underflow=False,
+                         allow_data_overflow=False, allow_data_underflow=False)
+   
+    hello_world = ">++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
+
+    FIRST_EMULATOR(hello_world, None).run()
+
+I suggest you check the folder ``Emulators``, where there are a handful of examples already created. In case you add a 
+new file, you will also need to modify the ``ONABFE4P_CLI.py`` to add it to the emulators by adding it to the 
+dictionary with some name of your choice.
+
 
 ## Customizable args
 
@@ -30,29 +73,6 @@ When creating a new BF Emulation, the following parameters are used:
      * allow_data_underflow: Allows data to wrap around, and go from the smallest possible value to the biggest one.
                             Has no use if max_cell_value is "None", since it can not pick a value to go after underflow.
 
-## How to use
-
-You just need to import the ONABFE4P_emulation_base and create a subclass, for example
-
-    class FIRST_EMULATOR(ONABFE4P_emulation_base):
-  
-        def __init__(self, program):
-            def print_default(x): print(x, end='')
-
-            def input_default(): return input()
-
-            super().__init__(program, initial_data=None, max_data=30000, hooks=[],
-                         io_output=print_default, io_input=input_default,
-                         max_cell_value=2**8, use_negatives=False,
-                         allow_pointer_overflow=False, allow_pointer_underflow=False,
-                         allow_data_overflow=False, allow_data_underflow=False)
-   
-    hello_world = ">++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
-
-    FIRST_EMULATOR(hello_world, None).run()
-
-In the folder ``Emulators`` there will be a handful of examples already created. You can use one of those, or copy and 
-customize it to create your own!
 
 ## Simple BF Standard Specification
 
