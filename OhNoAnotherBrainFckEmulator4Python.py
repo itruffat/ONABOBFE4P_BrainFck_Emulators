@@ -8,27 +8,27 @@ class ONABFE4P_emulation_base(ABC):
      * initial_data: A way to initialize the array for testing. It's not compulsory and if left as "None" it will be
                      automatically filled with zeros. It must always have a length equal to max_data.
      * max_data: The size of the data stack.
-     * hooks: Functions that are called during certain parts of the execution. Sublcasses can have their own hooks to
+     * hooks: Functions that are called during certain parts of the execution. Subclasses can have their own hooks to
               customize how things are called.
      * io_output: Function that will handle how data is given to the user of the program.
      * io_input: Function that will handle how data will be received from the user.
-     * max_cell_power: Variable that says what is the max_value the data blocks can have. It's defined as power of 2.
+     * max_cell_value: Variable that says what is the max_value the data blocks can have.
                        If left as "None", then an infinitely large piece of data can be used.
      * use_negatives: Allows the use of negative data values.
      * allow_pointer_overflow: Allows the data pointer to wrap around and go from (max_data -1) to 0.
      * allow_pointer_underflow: Allows the data pointer to wrap around and go from 0 to (max_data-1).
      * allow_data_overflow: Allows data to wrap around, and go from the biggest possible value to the smallest one.
-                            Has no use if max_cell_power is "None", since it can not overflow.
+                            Has no use if max_cell_value is "None", since it can not overflow.
      * allow_data_underflow: Allows data to wrap around, and go from the smallest possible value to the biggest one.
-                            Has no use if max_cell_power is "None", since it can not pick a value to go after underflow.
+                            Has no use if max_cell_value is "None", since it can not pick a value to go after underflow.
     """
 
-    def __init__(self, program, initial_data, max_data, hooks, io_output, io_input, max_cell_power, use_negatives,
+    def __init__(self, program, initial_data, max_data, hooks, io_output, io_input, max_cell_value, use_negatives,
                  allow_pointer_overflow, allow_pointer_underflow, allow_data_overflow, allow_data_underflow):
-        self.initial_config(program, initial_data, max_data, hooks, io_output, io_input, max_cell_power, use_negatives,
+        self.initial_config(program, initial_data, max_data, hooks, io_output, io_input, max_cell_value, use_negatives,
                             allow_pointer_overflow, allow_pointer_underflow, allow_data_overflow, allow_data_underflow)
 
-    def initial_config(self, program, initial_data, max_data, hooks, io_output, io_input, max_cell_power,
+    def initial_config(self, program, initial_data, max_data, hooks, io_output, io_input, max_cell_value,
                        use_negatives, allow_pointer_overflow, allow_pointer_underflow, allow_data_overflow,
                        allow_data_underflow):
         self.data = [0 for _ in range(max_data)] if initial_data is None else initial_data
@@ -39,7 +39,7 @@ class ONABFE4P_emulation_base(ABC):
         self.hooks = hooks
         self.io_output = io_output
         self.io_input = io_input
-        self.max_cell_power = max_cell_power
+        self.max_cell_value = max_cell_value
         self.program = program
         self.initial_data = initial_data
         self.max_data = max_data
@@ -92,33 +92,33 @@ class ONABFE4P_emulation_base(ABC):
                             self.data_pointer = self.max_data - 1
                 elif n == '+':
                     # Overflow check
-                    assert (self.allow_data_overflow or self.max_cell_power is None or
-                            self.data[self.data_pointer] < (2 ** self.max_cell_power)-1)
+                    assert (self.allow_data_overflow or self.max_cell_value is None or
+                            self.data[self.data_pointer] < (self.max_cell_value)-1)
                     do_continue,_ = self._run_hooks("+")
                     if do_continue:
                         self.data[self.data_pointer] += 1
                         # Overflow control
-                        if (self.max_cell_power is not None and
-                                self.data[self.data_pointer] > (2 ** self.max_cell_power) - 1):
+                        if (self.max_cell_value is not None and
+                                self.data[self.data_pointer] > (self.max_cell_value) - 1):
                             if self.use_negatives:
-                                self.data[self.data_pointer] = -(2 ** self.max_cell_power) + 1
+                                self.data[self.data_pointer] = -(self.max_cell_value) + 1
                             else:
                                 self.data[self.data_pointer] = 0
                 elif n == '-':
                     # Underflow check
                     assert (
-                            (self.max_cell_power is None and self.use_negatives) or
-                            (self.allow_data_underflow and self.max_cell_power is not None) or
-                            (self.use_negatives and self.data[self.data_pointer] > -(2 ** self.max_cell_power)+1) or
+                            (self.max_cell_value is None and self.use_negatives) or
+                            (self.allow_data_underflow and self.max_cell_value is not None) or
+                            (self.use_negatives and self.data[self.data_pointer] > -(self.max_cell_value)+1) or
                             (not self.use_negatives and self.data[self.data_pointer] > 0))
                     do_continue, _ = self._run_hooks("-")
                     if do_continue:
                         self.data[self.data_pointer] -= 1
                         # Underflow control
-                        if self.max_cell_power is not None:
-                            if ((self.use_negatives and self.data[self.data_pointer] < -(2 ** self.max_cell_power)+1) or
+                        if self.max_cell_value is not None:
+                            if ((self.use_negatives and self.data[self.data_pointer] < -(self.max_cell_value)+1) or
                                     (not self.use_negatives and self.data[self.data_pointer] < 0)):
-                                self.data[self.data_pointer] = (2 ** self.max_cell_power) - 1
+                                self.data[self.data_pointer] = (2 ** self.max_cell_value) - 1
                 elif n == '[':
                     do_continue, _ = self._run_hooks("PRE[")
                     if do_continue and self.data[self.data_pointer] == 0:
@@ -171,7 +171,7 @@ class ONABFE4P_emulation_base(ABC):
 class ONABFE4P_emulation_standard(ONABFE4P_emulation_base, ABC):
     """
     Subclass defined with the most common attributes, which I decided to use as default for my machines.
-    This includes a simple input/output scheme, 3000 available pieces of data and 8 bits for each cell
+    This includes a simple input/output scheme, 30000 available pieces of data and 8 bits for each cell
     """
 
     def __init__(self, program, initial_data, hooks):
@@ -179,8 +179,8 @@ class ONABFE4P_emulation_standard(ONABFE4P_emulation_base, ABC):
 
         def input_default(): return input()
 
-        super().__init__(program, initial_data, max_data=3000, hooks=hooks,
+        super().__init__(program, initial_data, max_data=30000, hooks=hooks,
                          io_output=print_default, io_input=input_default,
-                         max_cell_power=3, use_negatives=False,
+                         max_cell_value=3, use_negatives=False,
                          allow_pointer_overflow=False, allow_pointer_underflow=False,
                          allow_data_overflow=False, allow_data_underflow=False)

@@ -1,12 +1,5 @@
 from OhNoAnotherBrainFckEmulator4Python import ONABFE4P_emulation_standard
 
-class ONABFE4P_emulation_plain(ONABFE4P_emulation_standard):
-    """The most vainilla implementation fo ONABFE4P, it uses the default configuration and just reads the input and
-    prints the results, no hooks are involved."""
-    def __init__(self, program, initial_data):
-        super().__init__(program, initial_data, hooks=[])
-
-
 class ONABFE4P_emulation_with_generic_hooks(ONABFE4P_emulation_standard):
     """An example of how to use hooks, here you have 2 hooks:
     One of them only looks at the information (peep), whereas the other changes
@@ -31,7 +24,7 @@ class ONABFE4P_emulation_with_generic_hooks(ONABFE4P_emulation_standard):
                 emulation.io_output, \
                 emulation.io_input, \
                 emulation.hook_peep, \
-                emulation.max_cell_power, \
+                emulation.max_cell_value, \
                 do_continue, \
                 exception \
                     = emulation.hook_intercept(when,
@@ -47,7 +40,7 @@ class ONABFE4P_emulation_with_generic_hooks(ONABFE4P_emulation_standard):
                                                emulation.io_output,
                                                emulation.io_input,
                                                emulation.hook_peep,
-                                               emulation.max_cell_power,
+                                               emulation.max_cell_value,
                                                do_continue)
             return do_continue, False
 
@@ -98,6 +91,8 @@ class ONABFE4P_emulation_with_statefull_print(ONABFE4P_emulation_with_generic_ho
         self.io_output = print_with_memory
 
 
+
 hello_world = "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
+
 
 ONABFE4P_emulation_with_statefull_print(hello_world, None).run()
