@@ -2,7 +2,7 @@
 
 As the name implies, this is another BrianF*ck emulator done in python. I wanted to do some experiments in BF, and since BF is so simple, I wanted to use an emulator of my own for debugging.
 
-## BF machine specification
+## BF machine specification (OBSOLETE)
 
 There is no technical specification for many BF language features and a lot of the things it does, meaning it can be freely interpreted. Here are the interpretations I made:
 
