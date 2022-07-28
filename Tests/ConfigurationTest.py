@@ -39,14 +39,14 @@ test6 = Emulation_Test("+>++>+++>++++>---------", use_negatives=True)
 try:
     test6.run()
 except AssertionError as e:
-    assert(test6.data == [1,2,3,4,-7,0,0,0])
+    assert(test6.data == [1,2,3,4,-8,0,0,0])
 except Exception as e:
     raise e
 
 # Negative Data underflow
 test7 = Emulation_Test("+>++>+++>++++>---------", use_negatives=True, allow_data_underflow= True)
 test7.run()
-assert(test7.data == [1,2,3,4,6,0,0,0])
+assert(test7.data == [1,2,3,4,7,0,0,0])
 
 # Unwanted data overflow
 test8 = Emulation_Test("+>++>+++>++++>++++++++")
@@ -74,7 +74,7 @@ assert(test10.data == [1,2,3,4,1,0,0,0])
 # Data overflow (with negatives)
 test11 = Emulation_Test("+>++>+++>++++>+++++++++", use_negatives=True, allow_data_overflow=True)
 test11.run()
-assert(test11.data == [1,2,3,4,-6,0,0,0])
+assert(test11.data == [1,2,3,4,-7,0,0,0])
 
 # Normal pointer run
 test12 = Emulation_Test("+>++>+++>++++>++++>+++>++>+")

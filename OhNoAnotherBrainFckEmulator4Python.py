@@ -101,7 +101,7 @@ class ONABFE4P_emulation_base(ABC):
                         if (self.max_cell_value is not None and
                                 self.data[self.data_pointer] > (self.max_cell_value) - 1):
                             if self.use_negatives:
-                                self.data[self.data_pointer] = -(self.max_cell_value) + 1
+                                self.data[self.data_pointer] = -(self.max_cell_value)
                             else:
                                 self.data[self.data_pointer] = 0
                 elif n == '-':
@@ -109,14 +109,14 @@ class ONABFE4P_emulation_base(ABC):
                     assert (
                             (self.max_cell_value is None and self.use_negatives) or
                             (self.allow_data_underflow and self.max_cell_value is not None) or
-                            (self.use_negatives and self.data[self.data_pointer] > -(self.max_cell_value)+1) or
+                            (self.use_negatives and self.data[self.data_pointer] > -(self.max_cell_value)) or
                             (not self.use_negatives and self.data[self.data_pointer] > 0))
                     do_continue, _ = self._run_hooks("-")
                     if do_continue:
                         self.data[self.data_pointer] -= 1
                         # Underflow control
                         if self.max_cell_value is not None:
-                            if ((self.use_negatives and self.data[self.data_pointer] < -(self.max_cell_value)+1) or
+                            if ((self.use_negatives and self.data[self.data_pointer] < -(self.max_cell_value)) or
                                     (not self.use_negatives and self.data[self.data_pointer] < 0)):
                                 self.data[self.data_pointer] = (self.max_cell_value) - 1
                 elif n == '[':
