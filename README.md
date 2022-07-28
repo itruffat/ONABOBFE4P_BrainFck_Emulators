@@ -1,6 +1,7 @@
 # OhNoAnotherTinyBrainF*ckEmulator
 
-As the name implies, this is another BrianF*ck emulator done in python. I wanted to do some experiments in BF, and since BF is so simple, I wanted to use an emulator of my own for debugging.
+As the name implies, this is another BrianF*ck emulator done in python. I wanted to do some experiments in BF, and since 
+BF is so simple, I wanted to use an emulator of my own for debugging.
 
 ## BF machine specification
 

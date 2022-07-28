@@ -1,13 +1,13 @@
-from OhNoAnotherTinyBrainFckEmulator import ONATBFE_emulation_basic
+from OhNoAnotherBrainFckEmulator4Python import ONABFE4P_emulation_standard
 
-class ONATBFE_emulation_plain(ONATBFE_emulation_basic):
-    """The most vainilla implementation fo ONATBFE, it uses the default configuration and just reads the input and
+class ONABFE4P_emulation_plain(ONABFE4P_emulation_standard):
+    """The most vainilla implementation fo ONABFE4P, it uses the default configuration and just reads the input and
     prints the results, no hooks are involved."""
     def __init__(self, program, initial_data):
         super().__init__(program, initial_data, hooks=[])
 
 
-class ONATBFE_emulation_with_generic_hooks(ONATBFE_emulation_basic):
+class ONABFE4P_emulation_with_generic_hooks(ONABFE4P_emulation_standard):
     """An example of how to use hooks, here you have 2 hooks:
     One of them only looks at the information (peep), whereas the other changes
     ever field (interceptor). My suggestion is to create your own and customize them
@@ -60,7 +60,7 @@ class ONATBFE_emulation_with_generic_hooks(ONATBFE_emulation_basic):
         super().__init__(program, initial_data, hooks= [_run_peep, _run_interceptor])
 
 
-class ONATBFE_emulation_with_statefull_print(ONATBFE_emulation_with_generic_hooks):
+class ONABFE4P_emulation_with_statefull_print(ONABFE4P_emulation_with_generic_hooks):
     """Sometimes it's important to look at the memory"""
 
     def __init__(self, program, initial_data):
@@ -100,4 +100,4 @@ class ONATBFE_emulation_with_statefull_print(ONATBFE_emulation_with_generic_hook
 
 hello_world = "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
 
-ONATBFE_emulation_with_statefull_print(hello_world, None).run()
+ONABFE4P_emulation_with_statefull_print(hello_world, None).run()
