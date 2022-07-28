@@ -2,7 +2,7 @@ from OhNoAnotherBrainFckEmulator4Python import ONABFE4P_emulation_base
 
 class Emulation_Test(ONABFE4P_emulation_base):
 
-    def __init__(self, program, max_cell_value=3, use_negatives=False,
+    def __init__(self, program, max_cell_value=8, use_negatives=False,
                  allow_pointer_overflow=False, allow_pointer_underflow=False,
                  allow_data_overflow=False, allow_data_underflow=False, input_stack=None):
 
