@@ -1,11 +1,12 @@
+from abc import ABC
 from OhNoAnotherBrainFckEmulator4Python import ONABFE4P_emulation_standard
 
-class ONABFE4P_emulation_with_generic_hooks(ONABFE4P_emulation_standard):
+class ONABFE4P_emulation_with_generic_hooks(ONABFE4P_emulation_standard, ABC):
     """An example of how to use hooks, here you have 2 hooks:
     One of them only looks at the information (peep), whereas the other changes
     ever field (interceptor). My suggestion is to create your own and customize them
     by giving them the fields you actually need to intercept"""
-    def __init__(self, program, initial_data, peep=None, interceptor=None):
+    def __init__(self, program, initial_data=None, peep=None, interceptor=None):
 
         self.hook_peep = peep
         self.hook_intercept = interceptor
@@ -56,7 +57,7 @@ class ONABFE4P_emulation_with_generic_hooks(ONABFE4P_emulation_standard):
 class ONABFE4P_emulation_with_statefull_print(ONABFE4P_emulation_with_generic_hooks):
     """Sometimes it's important to look at the memory"""
 
-    def __init__(self, program, initial_data):
+    def __init__(self, program, initial_data=None):
 
         self.peep_started= False
         self.peep_always = False
@@ -95,4 +96,5 @@ class ONABFE4P_emulation_with_statefull_print(ONABFE4P_emulation_with_generic_ho
 hello_world = "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
 
 
-ONABFE4P_emulation_with_statefull_print(hello_world, None).run()
+if __name__=="__main__":
+    ONABFE4P_emulation_with_statefull_print(hello_world, None).run()

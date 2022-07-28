@@ -51,9 +51,8 @@ You just need to import the ONABFE4P_emulation_base and create a subclass, for e
 
     FIRST_EMULATOR(hello_world, None).run()
 
-In the folder examples there will be a handful of emulators already created. 
-
-You can also use one of those, or copy and customize it to create your own.
+In the folder ``Emulators`` there will be a handful of examples already created. You can use one of those, or copy and 
+customize it to create your own!
 
 ## Simple BF Standard Specification
 
