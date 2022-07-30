@@ -1,24 +1,27 @@
-# Oh No Another Brain F*ck Emulator (For Python)
+# Oh No, Another Bunch Of Brain F*ck Emulators (For Python)
 
 ## Introduction
 
-As the name implies, this is just another BrianF*ck emulator done in Python. BF was originally designed as an easy 
-language to compile language (not really caring if it was actually useful), which also made the job of creating a 
-personal emulator for it almost trivial. Originally created as _"Oh No Another Tiny BF Emulator"_, I created this 
-project because I wanted to do some experiments in BF, and using a custome emulator allowed me to start debugging fast. 
+_TL;DR This is a project to help you interpret/emulate BrianF*ck programs in Python. You can either use the interpreters/emulators_ 
+_that are already bunlded with it or easily create custom ones that follow the exact specifications you need._
 
-However, the hooks I was using for debugging could be abstracted, creating a more customizable code. Following that same 
-logic, certain behaviours could be made controllable by initialization arguments, allowing the user to create a huge 
-number of different BF machines. This is important since 
+Since BF was originally designed to be an easy-to-compile language (not really caring if it was actually useful), the job of 
+creating a personal interpreter for it is almost trivial. Originally created as _"Oh No Another Tiny BF Emulator"_, I created this 
+project because I wanted to do some debugging in BF, and using a custome interpreter allowed me to know where to look. 
+
+However, I realized there was potential for more. The hooks I was using for debugging could be abstracted, creating a more 
+customizable program. Following that same logic, certain behaviours could be made controllable by initialization arguments, 
+allowing the user to create a huge number of different BF interpreters/machines. This is important since 
 [BF is not a thoroughly defined language](https://en.wikipedia.org/wiki/Brainfuck#Portability_issues), and issues like 
-cell-size, computer number format (8-bits/16-bits, signed/unsigned, etc), pointer behaviour after going beyond the 
-threshold are not defined and can be decided by the user.
+cell-size, computer number format (8-bits/16-bits, signed/unsigned, etc) or pointer behaviour after going beyond the 
+threshold are not defined and can be decided by each programmer.
 
-As such, ONABFE4P is a library that allows you to create a BF emulator profile that follows the specifications you need.
+As such, ONABOBFE4P can be though as a Multi-specification BrainF*ck interpreter/emulator with hooks to enable customized
+behaviour and easy debugging.
 
 ## How to run
 
-To run already coded emulator profiles, simply use the CLI client, adding an emulator name and a program file or a 
+To run already coded an emulator, simply use the CLI client, adding an emulator name and a program file or a 
 program string. Examples:
 
     
@@ -27,9 +30,9 @@ program string. Examples:
 
 ## How to use a customized Emulator
 
-You just need to import the ONABFE4P_emulation_base and create a subclass, for example
+You just need to import the ONABOBFE4P_emulation_base and create a subclass, for example
 
-    class FIRST_EMULATOR(ONABFE4P_emulation_base):
+    class FIRST_EMULATOR(ONABOBFE4P_emulation_base):
   
         def __init__(self, program):
             def print_default(x): print(x, end='')
@@ -47,7 +50,7 @@ You just need to import the ONABFE4P_emulation_base and create a subclass, for e
     FIRST_EMULATOR(hello_world, None).run()
 
 I suggest you check the folder ``Emulators``, where there are a handful of examples already created. In case you add a 
-new file, you will also need to modify the ``ONABFE4P_CLI.py`` to add it to the emulators by adding it to the 
+new file, you will also need to modify the ``ONABOBFE4P_CLI.py`` to add it to the emulators by adding it to the 
 dictionary with some name of your choice.
 
 
@@ -86,3 +89,9 @@ Since there are no technical specification for many of the BF language features,
 
 * Trying to move the data pointer below zero or above "max_data" will result in an error.
 
+
+## Wait a second, if this is mostly a customizable Interpreter, why is it called Emulator?
+
+That's a fair and difficult to answer question, since an emulator and an interpreter are not techinically the same thing. (despite the fact
+that emulator for some things such as a CPU can be designed as an interpreter). In my personal opinion, give the memory access constrains imposed 
+by BF, it does make sense to think of it as a virtual computer instead of just a language specification. [BF machines do exists in the wild](https://hackaday.io/project/18599-brainfuckpc-relay-computer), as well as [different hardware specifications](https://github.com/asumagic/tinydumbcpu).  
