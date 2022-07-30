@@ -2,22 +2,23 @@
 
 ## Introduction
 
-_TL;DR This is a project to help you interpret/emulate BrianF*ck programs in Python. You can either use the interpreters/emulators_ 
-_that are already bunlded with it or easily create custom ones that follow the exact specifications you need._
+_TL;DR This is a project to help you interpret/emulate BrianF*ck programs in Python. You can either use the interpreters
+/emulators that are already bundled with it or easily create custom ones that follow the exact specifications you need._
 
-Since BF was originally designed to be an easy-to-compile language (not really caring if it was actually useful), the job of 
-creating a personal interpreter for it is almost trivial. Originally created as _"Oh No Another Tiny BF Emulator"_, I created this 
-project because I wanted to do some debugging in BF, and using a custome interpreter allowed me to know where to look. 
+Since BF was originally designed to be an easy2compile language (not really caring if it was actually useful), the job 
+of creating a personal interpreter for it is straight-forward. Originally created as _"Oh No Another Tiny BF Emulator"_, 
+I created this project because I wanted to do some debugging in BF, and using a custom interpreter allowed me to know 
+where to look. 
 
-However, I realized there was potential for more. The hooks I was using for debugging could be abstracted, creating a more 
-customizable program. Following that same logic, certain behaviours could be made controllable by initialization arguments, 
-allowing the user to create a huge number of different BF interpreters/machines. This is important since 
+However, I realized there was potential for more. The hooks I was using for debugging could be abstracted, creating a 
+more customizable program. Following that same logic, certain behaviours could be made controllable by initialization 
+arguments, allowing the user to create a huge number of different BF interpreters/machines. This is important since 
 [BF is not a thoroughly defined language](https://en.wikipedia.org/wiki/Brainfuck#Portability_issues), and issues like 
 cell-size, computer number format (8-bits/16-bits, signed/unsigned, etc) or pointer behaviour after going beyond the 
 threshold are not defined and can be decided by each programmer.
 
-As such, ONABOBFE4P can be though as a Multi-specification BrainF*ck interpreter/emulator with hooks to enable customized
-behaviour and easy debugging.
+As such, ONABOBFE4P can be though as a Multi-specification BrainF*ck interpreter/emulator with hooks to enable 
+customized behaviour and easy debugging.
 
 ## How to run
 
@@ -30,7 +31,7 @@ program string. Examples:
 
 ## How to use a customized Emulator
 
-You just need to import the ONABOBFE4P_emulation_base and create a subclass, for example
+You just need to import the ONABOBFE4P_emulation_base and create a subclass, for example:
 
     class FIRST_EMULATOR(ONABOBFE4P_emulation_base):
   
@@ -49,8 +50,8 @@ You just need to import the ONABOBFE4P_emulation_base and create a subclass, for
 
     FIRST_EMULATOR(hello_world, None).run()
 
-I suggest you check the folder ``Emulators``, where there are a handful of examples already created. In case you add a 
-new file, you will also need to modify the ``ONABOBFE4P_CLI.py`` to add it to the emulators by adding it to the 
+I suggest you check the folder ``Emulators/Bundled``, where there are a handful of examples already created. In case you 
+add a new file, you will also need to modify the ``ONABOBFE4P_CLI.py`` to add it to the emulators by adding it to the 
 dictionary with some name of your choice.
 
 
@@ -92,6 +93,14 @@ Since there are no technical specification for many of the BF language features,
 
 ## Wait a second, if this is mostly a customizable Interpreter, why is it called Emulator?
 
-That's a fair and difficult to answer question, since an emulator and an interpreter are not techinically the same thing. (despite the fact
-that emulator for some things such as a CPU can be designed as an interpreter). In my personal opinion, give the memory access constrains imposed 
-by BF, it does make sense to think of it as a virtual computer instead of just a language specification. [BF machines do exists in the wild](https://hackaday.io/project/18599-brainfuckpc-relay-computer), as well as [different hardware specifications](https://github.com/asumagic/tinydumbcpu).  
+That's a fair question, since an Emulator and an Interpreter are technically not the same thing. (despite the fact
+that some emulators are designed as interpreters). In my personal opinion, give the memory constrains imposed by BF, it 
+does make sense to think of it as a virtual computer instead of just a language specification. 
+[BF machines do exists in the wild](https://hackaday.io/project/18599-brainfuckpc-relay-computer), as well as 
+[different hardware specifications](https://github.com/asumagic/tinydumbcpu).  
+
+Moreover, the existence of an emulator "with quantum" is to allow certain degree of "hardware emulation", by allowing 
+the user to add an artificial "mechanical delay" to each operation on its own. That way, certain BF machines could be 
+emulated.
+
+However, feel free to call this project an Interpreter, since it's a correct definition for it.

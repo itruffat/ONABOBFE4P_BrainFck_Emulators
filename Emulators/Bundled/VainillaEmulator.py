@@ -1,4 +1,4 @@
-from OhNoAnotherBunchOfBrainFckEmulators4Python import ONABOBFE4P_emulation_standard
+from Emulators.OhNoAnotherBunchOfBrainFckEmulators4Python import ONABOBFE4P_emulation_standard
 
 
 class ONABOBFE4P_emulation_plain(ONABOBFE4P_emulation_standard):

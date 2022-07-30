@@ -50,22 +50,14 @@ class ONABOBFE4P_emulation_base(ABC):
         self.allow_data_underflow = allow_data_underflow
 
     def run(self):
+        return self._run_with_step(self._step)
+
+    def _run_with_step(self, run_step):
         do_continue = True
         self._run_hooks("START")
         while do_continue and self.program_pointer < len(self.program):
-            do_continue = self._step()
+            do_continue = run_step()
         self._run_hooks("DONE")
-
-    def _run_hooks(self, when, exception=None):
-        do_continue = True
-        skip_exception = False
-        for hook in self.hooks:
-            t_do_continue, t_skip_exception = hook(self, when, exception)
-            if t_do_continue is not None:
-                do_continue = do_continue and t_do_continue
-            if t_skip_exception is not None:
-                skip_exception = skip_exception or t_skip_exception
-        return do_continue, skip_exception
 
     def _step(self):
         try:
@@ -93,8 +85,8 @@ class ONABOBFE4P_emulation_base(ABC):
                 elif n == '+':
                     # Overflow check
                     assert (self.allow_data_overflow or self.max_cell_value is None or
-                            self.data[self.data_pointer] < (self.max_cell_value)-1)
-                    do_continue,_ = self._run_hooks("+")
+                            self.data[self.data_pointer] < (self.max_cell_value) - 1)
+                    do_continue, _ = self._run_hooks("+")
                     if do_continue:
                         self.data[self.data_pointer] += 1
                         # Overflow control
@@ -167,6 +159,17 @@ class ONABOBFE4P_emulation_base(ABC):
 
         return do_continue
 
+    def _run_hooks(self, when, exception=None):
+        do_continue = True
+        skip_exception = False
+        for hook in self.hooks:
+            t_do_continue, t_skip_exception = hook(self, when, exception)
+            if t_do_continue is not None:
+                do_continue = do_continue and t_do_continue
+            if t_skip_exception is not None:
+                skip_exception = skip_exception or t_skip_exception
+        return do_continue, skip_exception
+
 
 class ONABOBFE4P_emulation_standard(ONABOBFE4P_emulation_base, ABC):
     """
@@ -181,6 +184,6 @@ class ONABOBFE4P_emulation_standard(ONABOBFE4P_emulation_base, ABC):
 
         super().__init__(program, initial_data, max_data=30000, hooks=hooks,
                          io_output=print_default, io_input=input_default,
-                         max_cell_value=2**8, use_negatives=False,
+                         max_cell_value=2 ** 8, use_negatives=False,
                          allow_pointer_overflow=False, allow_pointer_underflow=False,
                          allow_data_overflow=False, allow_data_underflow=False)

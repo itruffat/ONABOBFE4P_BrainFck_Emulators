@@ -1,4 +1,4 @@
-from Emulators.HookableEmulator import ONABOBFE4P_emulation_with_generic_hooks
+from Emulators.Abstract.HookableEmulator import ONABOBFE4P_emulation_with_generic_hooks
 
 class ONABOBFE4P_emulation_with_statefull_print(ONABOBFE4P_emulation_with_generic_hooks):
     """Sometimes it's important to look at the memory"""

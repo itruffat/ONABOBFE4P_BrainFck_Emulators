@@ -1,10 +1,12 @@
 import argparse as AP
-from Emulators.VainillaEmulator import ONABOBFE4P_emulation_plain
-from Emulators.StatefulEmulator import ONABOBFE4P_emulation_with_statefull_print
+from Emulators.Bundled.VainillaEmulator import ONABOBFE4P_emulation_plain
+from Emulators.Bundled.StatefulEmulator import ONABOBFE4P_emulation_with_statefull_print
+from Emulators.Bundled.QuantumEmulator import ONABOBFE4P_emulation_with_quantum
 
 emulators = {
     'stateful-print':ONABOBFE4P_emulation_with_statefull_print,
-    'vainilla':ONABOBFE4P_emulation_plain
+    'vainilla':ONABOBFE4P_emulation_plain,
+    'quantum':ONABOBFE4P_emulation_with_quantum
 }
 
 argparser = AP.ArgumentParser(description='CLI to run OhNoAnotherBrainFckEmulator4Python')

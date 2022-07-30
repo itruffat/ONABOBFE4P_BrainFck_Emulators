@@ -1,5 +1,5 @@
 from abc import ABC
-from OhNoAnotherBunchOfBrainFckEmulators4Python import ONABOBFE4P_emulation_standard
+from Emulators.OhNoAnotherBunchOfBrainFckEmulators4Python import ONABOBFE4P_emulation_standard
 
 class ONABOBFE4P_emulation_with_generic_hooks(ONABOBFE4P_emulation_standard, ABC):
     """An example of how to use hooks, here you have 2 hooks:
