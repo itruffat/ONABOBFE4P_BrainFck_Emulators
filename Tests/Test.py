@@ -1,6 +1,6 @@
-from OhNoAnotherBrainFckEmulator4Python import ONABFE4P_emulation_base
+from OhNoAnotherBunchOfBrainFckEmulators4Python import ONABOBFE4P_emulation_base
 
-class Emulation_Test(ONABFE4P_emulation_base):
+class Emulation_Test(ONABOBFE4P_emulation_base):
 
     def __init__(self, program, max_cell_value=8, use_negatives=False,
                  allow_pointer_overflow=False, allow_pointer_underflow=False,

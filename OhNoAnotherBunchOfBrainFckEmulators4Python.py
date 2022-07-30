@@ -1,7 +1,7 @@
 from abc import ABC
 
 
-class ONABFE4P_emulation_base(ABC):
+class ONABOBFE4P_emulation_base(ABC):
     """
     Main class, here is where most things run.
      * program: The BF program to be run, it must be an string.
@@ -168,7 +168,7 @@ class ONABFE4P_emulation_base(ABC):
         return do_continue
 
 
-class ONABFE4P_emulation_standard(ONABFE4P_emulation_base, ABC):
+class ONABOBFE4P_emulation_standard(ONABOBFE4P_emulation_base, ABC):
     """
     Subclass defined with the most common attributes, which I decided to use as default for my machines.
     This includes a simple input/output scheme, 30000 available pieces of data and 8 bits for each cell

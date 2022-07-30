@@ -1,7 +1,7 @@
 from abc import ABC
-from OhNoAnotherBrainFckEmulator4Python import ONABFE4P_emulation_standard
+from OhNoAnotherBunchOfBrainFckEmulators4Python import ONABOBFE4P_emulation_standard
 
-class ONABFE4P_emulation_with_generic_hooks(ONABFE4P_emulation_standard, ABC):
+class ONABOBFE4P_emulation_with_generic_hooks(ONABOBFE4P_emulation_standard, ABC):
     """An example of how to use hooks, here you have 2 hooks:
     One of them only looks at the information (peep), whereas the other changes
     ever field (interceptor). My suggestion is to create your own and customize them

@@ -1,6 +1,6 @@
-from Emulators.HookableEmulator import ONABFE4P_emulation_with_generic_hooks
+from Emulators.HookableEmulator import ONABOBFE4P_emulation_with_generic_hooks
 
-class ONABFE4P_emulation_with_statefull_print(ONABFE4P_emulation_with_generic_hooks):
+class ONABOBFE4P_emulation_with_statefull_print(ONABOBFE4P_emulation_with_generic_hooks):
     """Sometimes it's important to look at the memory"""
 
     def __init__(self, program, initial_data=None):
@@ -41,4 +41,4 @@ class ONABFE4P_emulation_with_statefull_print(ONABFE4P_emulation_with_generic_ho
 hello_world = "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
 
 if __name__=="__main__":
-    ONABFE4P_emulation_with_statefull_print(hello_world, None).run()
+    ONABOBFE4P_emulation_with_statefull_print(hello_world, None).run()
