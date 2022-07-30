@@ -39,7 +39,7 @@ Examples:
 
 You just need to import the ONABOBFE4P_emulation_base and create a subclass, for example:
 
-    class FIRST_EMULATOR(ONABOBFE4P_emulation_base):
+    class MY_FIRST_EMULATOR(ONABOBFE4P_emulation_base):
   
         def __init__(self, program):
             def print_default(x): print(x, end='')
@@ -54,12 +54,23 @@ You just need to import the ONABOBFE4P_emulation_base and create a subclass, for
    
     hello_world = ">++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
 
-    FIRST_EMULATOR(hello_world, None).run()
+    MY_FIRST_EMULATOR(hello_world, None).run()
 
 I suggest you check the folder ``Emulators/Bundled``, where there are a handful of examples already created. In case you 
 add a new file, you will also need to modify the ``ONABOBFE4P_CLI.py`` to add it to the emulators by adding it to the 
 dictionary with some name of your choice.
 
+    from Emulators.Bundled.VainillaEmulator import ONABOBFE4P_emulation_plain
+    from Emulators.Bundled.StatefulEmulator import ONABOBFE4P_emulation_with_statefull_print
+    from Emulators.Bundled.QuantumEmulator import ONABOBFE4P_emulation_with_quantum
+    from <your_file> import MY_FIRST_EMULATOR
+
+    emulators = {
+        'stateful-print' : ONABOBFE4P_emulation_with_statefull_print,
+        'vainilla' : ONABOBFE4P_emulation_plain,
+        'quantum' : ONABOBFE4P_emulation_with_quantum,
+        <name_of_new_emulator> : MY_FIST_EMULATOR
+    }
 
 ## Customizable args
 
