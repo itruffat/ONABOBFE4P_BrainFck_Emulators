@@ -1,4 +1,4 @@
-# Oh No, Another Bunch Of Brain F*ck Emulators (For Python)
+# Oh No, Another Bunch Of Brain F*ck Emulators, For Python
 
 ## Introduction
 
