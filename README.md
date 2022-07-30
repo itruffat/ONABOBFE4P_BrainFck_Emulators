@@ -22,12 +22,16 @@ customized behaviour and easy debugging.
 
 ## How to run
 
-To run already coded an emulator, simply use the CLI client, adding an emulator name and a program file or a 
-program string. Examples:
+To run already coded an emulator, simply use the CLI client. You can either run it in interactive mode or clarify all the variables via the inline mode.
 
+For inline you will need to add an emulator name and either a program file or a sting (with the whole program). 
+
+Examples:
+
+    ./ONABOBFE4P_CLI.py interactive
+    ./ONABOBFE4P_CLI.py inline --e vainilla --path program.bf
+    ./ONABOBFE4P_CLI.py inline --e stateful-print --prog "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
     
-    ./ONABOBFE4P_CLI.py --e stateful-print --prog "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
-    ./ONABOBFE4P_CLI.py --e vainilla --path program.bf
 
 ## How to use a customized Emulator
 
