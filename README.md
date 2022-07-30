@@ -22,9 +22,11 @@ customized behaviour and easy debugging.
 
 ## How to run
 
-To run a bundled emulator, simply use the CLI client. You can either run it in interactive mode or clarify all the variables via the inline mode.
+To run a bundled emulator, simply use the CLI client. 
 
-For inline you will need to add an emulator name and either a program file or a sting (with the whole program). 
+You can either run it in interactive mode or clarify all the variables via the inline mode.
+
+For inline you will need to add an emulator name and either a program file or a string (with the whole program). 
 
 Examples:
 
