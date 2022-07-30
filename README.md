@@ -25,8 +25,8 @@ To run already coded an emulator, simply use the CLI client, adding an emulator 
 program string. Examples:
 
     
-    ./ONABFE4P_CLI.py --e stateful-print --prog "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
-    ./ONABFE4P_CLI.py --e vainilla --path program.bf
+    ./ONABOBFE4P_CLI.py --e stateful-print --prog "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
+    ./ONABOBFE4P_CLI.py --e vainilla --path program.bf
 
 ## How to use a customized Emulator
 
