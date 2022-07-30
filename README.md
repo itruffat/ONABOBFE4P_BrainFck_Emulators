@@ -7,7 +7,7 @@ _TL;DR This is a project to help you interpret/emulate BrianF*ck programs in Pyt
 
 Since BF was designed to be an easy2compile language (not really caring if it was actually useful), the job 
 of creating a personal interpreter can be pretty straight-forward. Originally called _"Oh No Another Tiny BF Emulator"_, 
-I starteed this project to do some debugging in BF, as using a custom interpreter allowed me to know 
+I started this project to do some debugging in BF, as using a custom interpreter allowed me to know 
 where to look. 
 
 However, there was potential for more. The hooks I was using for debugging could be abstracted, creating a 
