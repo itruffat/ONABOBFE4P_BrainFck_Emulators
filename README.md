@@ -5,12 +5,12 @@
 _TL;DR This is a project to help you interpret/emulate BrianF*ck programs in Python. You can either use the interpreters
 /emulators that are already bundled with it or easily create custom ones that follow the exact specifications you need._
 
-Since BF was originally designed to be an easy2compile language (not really caring if it was actually useful), the job 
-of creating a personal interpreter for it is straight-forward. Originally created as _"Oh No Another Tiny BF Emulator"_, 
-I created this project because I wanted to do some debugging in BF, and using a custom interpreter allowed me to know 
+Since BF was designed to be an easy2compile language (not really caring if it was actually useful), the job 
+of creating a personal interpreter can be pretty straight-forward. Originally called _"Oh No Another Tiny BF Emulator"_, 
+I created this project to do some debugging in BF, as using a custom interpreter allowed me to know 
 where to look. 
 
-However, I realized there was potential for more. The hooks I was using for debugging could be abstracted, creating a 
+However, there was potential for more. The hooks I was using for debugging could be abstracted, creating a 
 more customizable program. Following that same logic, certain behaviours could be made controllable by initialization 
 arguments, allowing the user to create a huge number of different BF interpreters/machines. This is important since 
 [BF is not a thoroughly defined language](https://en.wikipedia.org/wiki/Brainfuck#Portability_issues), and issues like 
@@ -22,7 +22,7 @@ customized behaviour and easy debugging.
 
 ## How to run
 
-To run already coded an emulator, simply use the CLI client. You can either run it in interactive mode or clarify all the variables via the inline mode.
+To run a bundled emulator, simply use the CLI client. You can either run it in interactive mode or clarify all the variables via the inline mode.
 
 For inline you will need to add an emulator name and either a program file or a sting (with the whole program). 
 
