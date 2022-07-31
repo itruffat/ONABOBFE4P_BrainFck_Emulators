@@ -91,18 +91,19 @@ class ONABOBFE4P_emulation_with_quantum(ONABOBFE4P_emulation_with_generic_hooks)
         self._run_with_step(self._step)
         print(f'\nTotal_quantum: {self.program_total_quantum}')
 
-hello_world = "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
 
-hello_world_qm = {
-                ">": 1,
-                "<": 1,
-                "+": 2,
-                "-": 2,
-                "[": 14,
-                "]": 3,
-                ".": 1,
-                ",": 100
-            }
 
 if __name__ == "__main__":
+    hello_world = "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
+
+    hello_world_qm = {
+        ">": 1,
+        "<": 1,
+        "+": 2,
+        "-": 2,
+        "[": 14,
+        "]": 3,
+        ".": 1,
+        ",": 100
+    }
     ONABOBFE4P_emulation_with_quantum(hello_world, None, hello_world_qm).run()

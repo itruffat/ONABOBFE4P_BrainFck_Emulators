@@ -7,8 +7,7 @@ class ONABOBFE4P_emulation_plain(ONABOBFE4P_emulation_standard):
     def __init__(self, program, initial_data=None):
         super().__init__(program, initial_data, hooks=[])
 
-hello_world = "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
-
 
 if __name__=="__main__":
+    hello_world = "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
     ONABOBFE4P_emulation_plain(hello_world, None).run()

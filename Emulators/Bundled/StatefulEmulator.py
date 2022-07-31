@@ -39,7 +39,7 @@ class ONABOBFE4P_emulation_with_statefull_print(ONABOBFE4P_emulation_with_generi
         self.io_output = print_with_memory
 
 
-hello_world = "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
 
 if __name__ == "__main__":
+    hello_world = "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
     ONABOBFE4P_emulation_with_statefull_print(hello_world, None).run()

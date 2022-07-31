@@ -1,6 +1,87 @@
 from Emulators.OhNoAnotherBunchOfBrainFckEmulators4Python import ONABOBFE4P_emulation_base
-from Emulators.Bundled.CurseEmulatorEngine import start_curse_engine, start_curse_queues, queues
 from time import sleep
+import curses
+import os
+from threading import Thread
+from time import sleep, time
+from queue import Queue, Empty
+
+curse_screen = """OUTPUT: //////////////////////////////////////////////////////////////////////
+/                                                                            /
+/                                                                            /
+//////////////////////////////////////////////////////////////////////////////
+INPUT:
+Data              
+|     |     |     |     |     |     |     |     |     |     |     |     |     |
+|     |     |     |     |     |     |     |     |     |     |     |     |     |
+
+Program
+|     |     |     |     |     |     |     |     |     |     |     |     |     |
+                                                                             """
+
+if os.getenv("PRINT_BLANK_DATA_TO_ENSURE_ENLARGED_TERMINAL_IN_IDE", default=False):
+    for _ in range(15): print(" " * 80); sleep(0.00001);
+
+
+class Queues:
+    def __init__(self):
+        self.input = None
+        self.shutdown = None
+        self.output = None
+
+
+queues = Queues()
+
+
+def start_curse_queues():
+    global queues
+
+    queues.input = Queue()
+    queues.shutdown = Queue()
+    queues.output = Queue()
+
+
+def start_curse_engine():
+    global queues
+
+    stdscr = curses.initscr()
+    curses.noecho()
+    curses.curs_set(0)
+    stdscr.keypad(True)
+
+    outputwin = stdscr.subwin(12, 80, 0, 0)
+    inputwin = stdscr.subwin(2, 80, 12, 0)
+
+    def outputThreadFunc():
+        t = time()
+        for e, line in enumerate(curse_screen.split("\n")):
+            outputwin.addstr(e, 0, line)
+        outputwin.move(0, 0)
+        while queues.shutdown.empty():
+            try:
+                if not queues.output.empty():
+                    y, x, inp = queues.output.get()
+                    if (y, x) != (8, 79):
+                        outputwin.addstr(y, x, inp)
+            except Empty:
+                pass
+            if time() - t > 0.05:
+                t = time()
+                outputwin.refresh()
+
+    def inputThreadFunc():
+        inputwin.addstr("-" * 80)
+        inputwin.addstr("")
+        inputwin.timeout(200)
+        while queues.shutdown.empty():
+            input_char = inputwin.getch()
+            if input_char != -1:
+                queues.input.put(input_char)
+
+    outputThread = Thread(target=outputThreadFunc)
+    inputThread = Thread(target=inputThreadFunc)
+    outputThread.start()
+    inputThread.start()
 
 class ONABOBFE4P_emulation_using_curse(ONABOBFE4P_emulation_base):
     def __init__(self, program, initial_data=None):
@@ -97,5 +178,5 @@ class ONABOBFE4P_emulation_using_curse(ONABOBFE4P_emulation_base):
         return super()._step()
 
 if __name__ == "__main__":
-    input_output = ",.++.>,.<." + "."*200
-    ONABOBFE4P_emulation_using_curse(input_output, None).run()
+    hello_world = "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
+    ONABOBFE4P_emulation_using_curse(hello_world, None).run()
