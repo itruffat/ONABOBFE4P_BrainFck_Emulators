@@ -32,7 +32,7 @@ Examples:
 
     ./ONABOBFE4P_CLI.py interactive
     ./ONABOBFE4P_CLI.py inline --e vainilla --path program.bf
-    ./ONABOBFE4P_CLI.py inline --e stateful-print --prog "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
+    ./ONABOBFE4P_CLI.py inline --e curse --prog "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
     
 
 ## How to use a customized Emulator
