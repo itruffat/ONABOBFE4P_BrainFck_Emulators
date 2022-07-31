@@ -60,8 +60,6 @@ def start_curse_engine():
         lowerwin.timeout(200)
         while queues.shutdown.empty():
             a = lowerwin.getch()
-            with open("A.txt", "w") as A:
-                A.write(str(a))
             if a != -1:
                 queues.input.put(a)
 
