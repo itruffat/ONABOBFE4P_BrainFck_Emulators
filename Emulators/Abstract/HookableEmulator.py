@@ -7,7 +7,10 @@ class ONABOBFE4P_emulation_with_generic_hooks(ONABOBFE4P_emulation_standard, ABC
     ever field (interceptor). My suggestion is to create your own and customize them
     by giving them the fields you actually need to intercept"""
     def __init__(self, program, initial_data=None, peep=None, interceptor=None):
+        hooks = self._init(program,initial_data,peep,interceptor)
+        super().__init__(program, initial_data, hooks=hooks)
 
+    def _init(self, program, initial_data, peep, interceptor):
         self.hook_peep = peep
         self.hook_intercept = interceptor
 
@@ -51,4 +54,4 @@ class ONABOBFE4P_emulation_with_generic_hooks(ONABOBFE4P_emulation_standard, ABC
                                     emulation.program_pointer, emulation.program, emulation.input_buffer)
             return True, False
 
-        super().__init__(program, initial_data, hooks= [_run_peep, _run_interceptor])
+        return [_run_peep, _run_interceptor]

@@ -1,14 +1,23 @@
 import argparse as AP
 import glob, os
 
+class emulator_not_found():
+    def __init__(self,*args): pass;
+    def run(self): print("Could not load Emulator, please make sure you have the correct libraries for it"); exit(1);
+
+
 from Emulators.Bundled.VainillaEmulator import ONABOBFE4P_emulation_plain
 from Emulators.Bundled.StatefulEmulator import ONABOBFE4P_emulation_with_statefull_print
 from Emulators.Bundled.QuantumEmulator import ONABOBFE4P_emulation_with_quantum
+try: from Emulators.Bundled.CurseEmulator import ONABOBFE4P_emulation_using_curse
+except ModuleNotFoundError as e: ONABOBFE4P_emulation_using_curse = emulator_not_found
+except ImportError as e: ONABOBFE4P_emulation_using_curse = emulator_not_found
 
 emulators = {
     'stateful-print':ONABOBFE4P_emulation_with_statefull_print,
     'vainilla':ONABOBFE4P_emulation_plain,
-    'quantum':ONABOBFE4P_emulation_with_quantum
+    'quantum':ONABOBFE4P_emulation_with_quantum,
+    'curse': ONABOBFE4P_emulation_using_curse
 }
 
 argparser = AP.ArgumentParser(description='CLI to run OhNoAnotherBrainFckEmulator4Python')
