@@ -1,13 +1,15 @@
 from abc import ABC
 from Emulators.OhNoAnotherBunchOfBrainFckEmulators4Python import ONABOBFE4P_emulation_standard
 
+
 class ONABOBFE4P_emulation_with_generic_hooks(ONABOBFE4P_emulation_standard, ABC):
     """An example of how to use hooks, here you have 2 hooks:
     One of them only looks at the information (peep), whereas the other changes
     ever field (interceptor). My suggestion is to create your own and customize them
     by giving them the fields you actually need to intercept"""
+
     def __init__(self, program, initial_data=None, peep=None, interceptor=None):
-        hooks = self._init(program,initial_data,peep,interceptor)
+        hooks = self._init(program, initial_data, peep, interceptor)
         super().__init__(program, initial_data, hooks=hooks)
 
     def _init(self, program, initial_data, peep, interceptor):
@@ -50,7 +52,8 @@ class ONABOBFE4P_emulation_with_generic_hooks(ONABOBFE4P_emulation_standard, ABC
 
         def _run_peep(emulation, when, exception=None):
             if emulation.hook_peep is not None:
-                emulation.hook_peep(when, exception, emulation.data, emulation.initial_data, emulation.max_data, emulation.data_pointer,
+                emulation.hook_peep(when, exception, emulation.data, emulation.initial_data, emulation.max_data,
+                                    emulation.data_pointer,
                                     emulation.program_pointer, emulation.program, emulation.input_buffer)
             return True, False
 

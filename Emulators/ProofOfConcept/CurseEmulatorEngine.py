@@ -7,13 +7,16 @@ from queue import Queue, Empty
 if os.getenv("PRINT_BLANK_DATA_TO_ENSURE_ENLARGED_TERMINAL_IN_IDE", default=False):
     for _ in range(10): print(" " * 80); sleep(0.00001);
 
-class Queues():
+
+class Queues:
     def __init__(self):
         self.input = None
         self.shutdown = None
         self.output = None
 
+
 queues = Queues()
+
 
 def start_curse_queues():
     global queues
@@ -21,6 +24,7 @@ def start_curse_queues():
     queues.input = Queue()
     queues.shutdown = Queue()
     queues.output = Queue()
+
 
 def start_curse_engine():
     global queues
@@ -42,20 +46,19 @@ def start_curse_engine():
                 if not queues.output.empty():
                     inp = queues.output.get()
                     if (y, x) == (8, 79):
-                        y,x = 0,0
+                        y, x = 0, 0
                     upperwin.addstr(y, x, inp)
                     if x == 79:
-                        y = (y + 1)%9
-                    x = (x+1) % 80
+                        y = (y + 1) % 9
+                    x = (x + 1) % 80
             except Empty:
                 pass
             if time() - t > 0.05:
                 t = time()
                 upperwin.refresh()
 
-
     def inputThreadFunc():
-        lowerwin.addstr("-"*80)
+        lowerwin.addstr("-" * 80)
         lowerwin.addstr("")
         lowerwin.timeout(200)
         while queues.shutdown.empty():

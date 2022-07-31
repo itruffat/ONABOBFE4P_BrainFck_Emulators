@@ -1,7 +1,8 @@
 from abc import ABC
 from Emulators.OhNoAnotherBunchOfBrainFckEmulators4Python import ONABOBFE4P_emulation_base
-from Emulators.Abstract.CurseEmulatorEngine import start_curse_engine, start_curse_queues, queues
+from Emulators.ProofOfConcept.CurseEmulatorEngine import start_curse_engine, start_curse_queues, queues
 from time import sleep
+
 
 class ONABOBFE4P_emulation_using_curse_POC(ONABOBFE4P_emulation_base, ABC):
     def __init__(self, program, initial_data=None):
@@ -22,7 +23,7 @@ class ONABOBFE4P_emulation_using_curse_POC(ONABOBFE4P_emulation_base, ABC):
                     input_char = chr(self.input_queue.get())
             return [input_char]
 
-        def finish_curse_when_program_done(self,when,error):
+        def finish_curse_when_program_done(self, when, error):
             if when == "DONE":
                 sleep(4)
                 self.shutdown_queue.put(1)
@@ -41,6 +42,7 @@ class ONABOBFE4P_emulation_using_curse_POC(ONABOBFE4P_emulation_base, ABC):
         except Exception as e:
             self.shutdown_queue.put(1)
             raise e
+
 
 if __name__ == "__main__":
     input_output = ",.++.>,.<."
