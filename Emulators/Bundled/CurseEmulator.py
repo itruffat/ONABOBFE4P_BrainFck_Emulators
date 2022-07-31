@@ -116,7 +116,7 @@ class ONABOBFE4P_emulation_using_curse(ONABOBFE4P_emulation_base):
         def update_curse_screen(self, when, error):
             if when == "END_STEP":
 
-                self.output_queue.put((9, 9, str(self.program_pointer)))
+                self.output_queue.put((9, 9, str(self.program_pointer - 1)))
                 for e, x in enumerate(range(1, 78, 6)):
                     if self.program_pointer + e < len(self.program):
                         self.output_queue.put((10, x, self.program[self.program_pointer + e] + "  "))
