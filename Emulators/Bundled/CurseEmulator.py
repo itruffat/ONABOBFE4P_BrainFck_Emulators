@@ -12,12 +12,13 @@ curse_screen = """OUTPUT: //////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 INPUT:
 Data              
-|     |     |     |     |     |     |     |     |     |     |     |     |     |
-|     |     |     |     |     |     |     |     |     |     |     |     |     |
-
-Program
-|     |     |     |     |     |     |     |     |     |     |     |     |     |
-                                                                             """
+|     |     |     |     |     |     /     \\     |     |     |     |     |     |
+|     |     |     |     |     |     \\     /     |     |     |     |     |     |
+                                                                          
+Program                                   
+                                    /     \\                                   
+|     |     |     |     |     |     \\     /     |     |     |     |     |     |
+                                                                           """
 
 if os.getenv("PRINT_BLANK_DATA_TO_ENSURE_ENLARGED_TERMINAL_IN_IDE", default=False):
     for _ in range(15): print(" " * 80); sleep(0.00001);
@@ -49,8 +50,8 @@ def start_curse_engine():
     curses.curs_set(0)
     stdscr.keypad(True)
 
-    outputwin = stdscr.subwin(12, 80, 0, 0)
-    inputwin = stdscr.subwin(2, 80, 12, 0)
+    outputwin = stdscr.subwin(13, 80, 0, 0)
+    inputwin = stdscr.subwin(2, 80, 13, 0)
 
     def outputThreadFunc():
         t = time()
@@ -83,8 +84,9 @@ def start_curse_engine():
     outputThread.start()
     inputThread.start()
 
+
 class ONABOBFE4P_emulation_using_curse(ONABOBFE4P_emulation_base):
-    def __init__(self, program, initial_data=None):
+    def __init__(self, program, initial_data=None, delay=0.01):
 
         start_curse_queues()
 
@@ -95,12 +97,13 @@ class ONABOBFE4P_emulation_using_curse(ONABOBFE4P_emulation_base):
         self.y = 1
         self.move_change = True
         self.value_change = True
+        self.delay=delay
 
         def print_curse(c):
             self.x += 1
             if self.x == 77:
                 self.x = 1
-                self.y+= 1
+                self.y += 1
                 if self.y == 3:
                     self.y = 1
             self.output_queue.put((self.y, self.x, c))
@@ -118,21 +121,20 @@ class ONABOBFE4P_emulation_using_curse(ONABOBFE4P_emulation_base):
 
                 self.output_queue.put((9, 9, str(self.program_pointer - 1)))
                 for e, x in enumerate(range(1, 78, 6)):
-                    if self.program_pointer + e < len(self.program):
-                        self.output_queue.put((10, x, self.program[self.program_pointer + e] + "  "))
+                    if (self.program_pointer + e - 6 >= 0) and (self.program_pointer + e - 6 < len(self.program)):
+                        self.output_queue.put((11, x, self.program[self.program_pointer + e - 6] + "  "))
                     else:
-                        self.output_queue.put((10, x, "END"))
-
+                        self.output_queue.put((11, x, "XXX"))
 
                 if self.move_change:
                     self.output_queue.put((5, 5, str(self.data_pointer)))
-                    for e,x in enumerate(range(1,78,6)):
-                        if self.data_pointer + e < self.max_data:
-                            val = self.data[self.data_pointer+e]
+                    for e, x in enumerate(range(1, 78, 6)):
+                        if self.data_pointer + e - 6 >= 0 and self.data_pointer + e - 6 < self.max_data:
+                            val = self.data[self.data_pointer + e - 6]
                             if 32 <= val and 126 >= val:
-                                self.output_queue.put((6 ,  x,  "'" +chr(val) + "'"))
+                                self.output_queue.put((6, x, "'" + chr(val) + "'"))
                             else:
-                                self.output_queue.put((6 ,  x,  "   "))
+                                self.output_queue.put((6, x, "   "))
                             self.output_queue.put((7, x, str(val) + "  "))
                         else:
                             self.output_queue.put((6, x, "     "))
@@ -141,13 +143,13 @@ class ONABOBFE4P_emulation_using_curse(ONABOBFE4P_emulation_base):
                 elif self.value_change:
                     val = self.data[self.data_pointer]
                     if 32 <= val and 126 >= val:
-                        self.output_queue.put((6, 1, "'" + chr(val) + "'"))
+                        self.output_queue.put((6, 1 + 36, "'" + chr(val) + "'"))
                     else:
-                        self.output_queue.put((6, 1, "   "))
-                    self.output_queue.put((7 , 1, str(val) + "  "))
+                        self.output_queue.put((6, 1 + 36, "   "))
+                    self.output_queue.put((7, 1 + 36, str(val) + "  "))
 
-            if when in [">","<","-","+","[","]",".",",","END_STEP"]:
-                self.move_change =  when in [">","<","[","]"]
+            if when in [">", "<", "-", "+", "[", "]", ".", ",", "END_STEP"]:
+                self.move_change = when in [">", "<", "[", "]"]
                 self.value_change = when in ["+", "-", ","]
 
             return True, False
@@ -174,9 +176,10 @@ class ONABOBFE4P_emulation_using_curse(ONABOBFE4P_emulation_base):
             raise e
 
     def _step(self):
-        sleep(0.1)
+        sleep(self.delay)
         return super()._step()
 
+
 if __name__ == "__main__":
-    hello_world = "s>++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
-    ONABOBFE4P_emulation_using_curse(hello_world, None).run()
+    hello_world = ">++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
+    ONABOBFE4P_emulation_using_curse(hello_world, None, 0.02).run()
