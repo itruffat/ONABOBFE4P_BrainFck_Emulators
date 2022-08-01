@@ -1,5 +1,4 @@
 from Emulators.OhNoAnotherBunchOfBrainFckEmulators4Python import ONABOBFE4P_emulation_base
-from time import sleep
 import curses
 import os
 from threading import Thread
@@ -10,7 +9,7 @@ curse_screen = """OUTPUT: //////////////////////////////////////////////////////
 /                                                                            /
 /                                                                            /
 //////////////////////////////////////////////////////////////////////////////
-INPUT:
+INPUT:                                                               SPEED:x1
 Data              
 |     |     |     |     |     |     /     \\     |     |     |     |     |     |
 |     |     |     |     |     |     \\     /     |     |     |     |     |     |
@@ -18,17 +17,18 @@ Data
 Program                                   
                                     /     \\                                   
 |     |     |     |     |     |     \\     /     |     |     |     |     |     |
-                                                                           """
+                                                                  
+....[LEFT:Decrease Speed]...[RIGHT:Increase Speed]...[DOWN:One Step (on x0)]..."""
 
 if os.getenv("PRINT_BLANK_DATA_TO_ENSURE_ENLARGED_TERMINAL_IN_IDE", default=False):
-    for _ in range(15): print(" " * 80); sleep(0.00001);
-
+    for _ in range(16): print(" " * 80); sleep(0.00001);
 
 class Queues:
     def __init__(self):
         self.input = None
         self.shutdown = None
         self.output = None
+        self.commands = None
 
 
 queues = Queues()
@@ -40,6 +40,7 @@ def start_curse_queues():
     queues.input = Queue()
     queues.shutdown = Queue()
     queues.output = Queue()
+    queues.commands = Queue()
 
 
 def start_curse_engine():
@@ -50,8 +51,8 @@ def start_curse_engine():
     curses.curs_set(0)
     stdscr.keypad(True)
 
-    outputwin = stdscr.subwin(13, 80, 0, 0)
-    inputwin = stdscr.subwin(2, 80, 13, 0)
+    outputwin = stdscr.subwin(14, 80, 0, 0)
+    inputwin = stdscr.subwin(2, 80, 14, 0)
 
     def outputThreadFunc():
         t = time()
@@ -77,7 +78,11 @@ def start_curse_engine():
         while queues.shutdown.empty():
             input_char = inputwin.getch()
             if input_char != -1:
-                queues.input.put(input_char)
+                if 32 <= input_char and 126 >= input_char:
+                    queues.input.put(input_char)
+                else:
+                    if input_char in [curses.KEY_UP, curses.KEY_LEFT, curses.KEY_DOWN, curses.KEY_RIGHT]:
+                        queues.commands.put(input_char)
 
     outputThread = Thread(target=outputThreadFunc)
     inputThread = Thread(target=inputThreadFunc)
@@ -86,18 +91,25 @@ def start_curse_engine():
 
 
 class ONABOBFE4P_emulation_using_curse(ONABOBFE4P_emulation_base):
-    def __init__(self, program, initial_data=None, delay=0.01):
+    """More a proof of concept than anything else, this emulator uses curse and can change the speed operations
+    proccessed. So you may have no delay (max), a huge delay (x1) or even halt the execution all together (x0)."""
+    def __init__(self, program, initial_data=None):
 
         start_curse_queues()
+
+        self.speeds = [None, 1, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0]
+        self.speed_labels = ['x0 ', 'x1  ', 'x2 ', 'x4 ', 'x8 ', 'x16', 'x32', 'x64', 'max']
+        self.current_speed = 1
 
         self.input_queue = queues.input
         self.output_queue = queues.output
         self.shutdown_queue = queues.shutdown
+        self.commands_queue = queues.commands
         self.x = 0
         self.y = 1
         self.move_change = True
         self.value_change = True
-        self.delay=delay
+        self.delay= self.speeds[self.current_speed]
 
         def print_curse(c):
             self.x += 1
@@ -167,6 +179,27 @@ class ONABOBFE4P_emulation_using_curse(ONABOBFE4P_emulation_base):
                          allow_pointer_overflow=False, allow_pointer_underflow=False,
                          allow_data_overflow=False, allow_data_underflow=False)
 
+    def answer_commands(self):
+        command_continue = False
+        if not self.commands_queue.empty():
+            command = self.commands_queue.get()
+            change_speed = False
+            if command == curses.KEY_RIGHT:
+                if self.current_speed + 1 < len(self.speeds):
+                    self.current_speed += 1
+                    self.delay = self.speeds[self.current_speed]
+                    change_speed = True
+            if command == curses.KEY_LEFT:
+                if self.current_speed > 0:
+                    self.current_speed -= 1
+                    self.delay = self.speeds[self.current_speed]
+                    change_speed = True
+            if command == curses.KEY_DOWN and self.speeds[self.current_speed] is None:
+                command_continue = True
+            if change_speed:
+                self.output_queue.put((4, 75, self.speed_labels[self.current_speed]))
+        return command_continue
+
     def run(self):
         try:
             start_curse_engine()
@@ -176,10 +209,17 @@ class ONABOBFE4P_emulation_using_curse(ONABOBFE4P_emulation_base):
             raise e
 
     def _step(self):
-        sleep(self.delay)
-        return super()._step()
+        command_continue = self.answer_commands()
+        if self.delay is not None or command_continue:
+            if self.delay is not None:
+                sleep(self.delay)
+            do_continue = super()._step()
+        else:
+            do_continue = True
+            sleep(1)
+        return do_continue
 
 
 if __name__ == "__main__":
     hello_world = ">++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<++.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-]<+."
-    ONABOBFE4P_emulation_using_curse(hello_world, None, 0.02).run()
+    ONABOBFE4P_emulation_using_curse(hello_world, None).run()
