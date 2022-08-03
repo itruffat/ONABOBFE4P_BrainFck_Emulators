@@ -1,5 +1,9 @@
 # Oh No, Another Bunch Of Brain F*ck Emulators, For Python
 
+
+![](curse-gif.gif)
+
+
 ## Introduction
 
 _TL;DR This is a project to help you interpret/emulate BrianF*ck programs in Python. You can either use the interpreters
@@ -25,6 +29,7 @@ customized behaviour and easy debugging.
 To run a bundled emulator, simply use the CLI client. 
 
 You can either run it in interactive mode or clarify all the variables via the inline mode.
+
 
 For inline you will need to add an emulator name and either a program file or a string (with the whole program). 
 
