@@ -1,0 +1,6 @@
+name: Oh No, Another Bunch Of BF Emulators
+category: Esolanguage-stuff
+skip: False
+description : |
+  Strongly connected to the BF Nomenclature Project, this repo provides a configurable BF-machine that can be defined according to the user's request. 
+  Additionaly, hooks are available to do more powerful things, such as adding stop-points where certain characters are found.
